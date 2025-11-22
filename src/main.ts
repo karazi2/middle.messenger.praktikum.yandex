@@ -15,7 +15,6 @@ const nav = document.querySelector('#nav')!
 const app = document.querySelector('#app')!
 nav.innerHTML = new Nav().render()
 
-// мок пользователя для профиля
 const mockUser = {
 	avatar: avatarImg,
 	first_name: 'Иван',
@@ -26,7 +25,6 @@ const mockUser = {
 	phone: '+79998887766',
 }
 
-// Функция переключения страниц
 function openPage(page: string) {
 	switch (page) {
 		case 'signIn':

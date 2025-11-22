@@ -1,10 +1,7 @@
 import './profile.scss'
 import Handlebars from 'handlebars'
 import templateSource from './profile.hbs?raw'
-
 import type { UserProfileData } from '../../types/userProfileEdit'
-
-// ← Правильный импорт настоящего компонента!
 import { BackButton } from '../../components/backButton/backButton'
 
 export class ProfilePage {

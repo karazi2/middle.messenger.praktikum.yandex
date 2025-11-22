@@ -1,10 +1,9 @@
-// src/pages/profileEdit/profileEdit.scss
 @use '../../styles/variables' as v;
 @use '../../styles/mixins' as m;
 
 .profile-edit-form {
 	width: 510px;
-	@include m.form-column(18px); // display:flex; column; gap:18px;
+	@include m.form-column(18px);
 }
 
 .profile-edit-form .field {
@@ -19,7 +18,7 @@
 .profile-edit-form .field span {
 	font-size: 13px;
 	color: v.$color-text-main;
-	font-weight: 500; // <-- добавили, чтобы совпадало по жирности
+	font-weight: 500;
 }
 
 .profile-edit-form input {
@@ -31,7 +30,7 @@
 
 	font-size: 13px;
 	color: v.$color-text-muted;
-	font-weight: 500; // <-- если хочешь, чтобы и значения были 500, как в профиле
+	font-weight: 500;
 
 	background: transparent;
 }
