@@ -1,0 +1,46 @@
+@use './variables' as v;
+
+@mixin page-card(
+	$width,
+	$height: auto,
+	$padding: 40px 30px 30px 30px,
+	$shadow: v.$shadow-card
+) {
+	width: $width;
+
+	@if $height != auto {
+		height: $height;
+	}
+
+	margin: 40px auto;
+	padding: $padding;
+
+	background: v.$color-surface;
+	border-radius: v.$radius-card;
+	box-shadow: $shadow;
+}
+
+@mixin page-title {
+	text-align: center;
+	font-size: 20px;
+	font-weight: 500;
+	line-height: 20px;
+	color: v.$color-text-main;
+}
+
+@mixin primary-link($size: 11px, $weight: 500) {
+	font-size: $size;
+	font-weight: $weight;
+	color: v.$color-primary;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+@mixin form-column($gap: 16px) {
+	display: flex;
+	flex-direction: column;
+	gap: $gap;
+}

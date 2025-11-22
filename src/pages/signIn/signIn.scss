@@ -1,0 +1,36 @@
+@use '../../styles/mixins' as m;
+
+.signin-page {
+	@include m.page-card(340px, 460px, 50px 30px 30px 30px);
+}
+
+.signin-page h1 {
+	@include m.page-title;
+	margin-bottom: 40px;
+}
+
+.signin-form {
+	@include m.form-column(32px);
+}
+
+.signin-form__fields {
+	@include m.form-column(16px);
+}
+
+.signin-form__actions {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.signin-form__submit {
+	width: 100%;
+}
+
+.signin-form__link {
+	text-align: center;
+}
+
+.signin-form__link a {
+	@include m.primary-link(11px, 500);
+}

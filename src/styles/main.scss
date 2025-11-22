@@ -1,0 +1,8 @@
+@use './global';
+
+@use '../pages/signIn/signIn';
+@use '../pages/registration/registrationPage';
+@use '../pages/profile/profile';
+@use '../pages/profileEdit/profileEdit';
+@use '../pages/passwordEdit/passwordEdit';
+@use '../pages/error/error';
