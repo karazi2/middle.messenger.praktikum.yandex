@@ -1,0 +1,56 @@
+<main class='profile-card'>
+
+	<div class='profile-card__side'>
+		{{{backButton}}}
+	</div>
+
+	<div class='profile-card__content'>
+
+		<div class='profile-page__avatar'>
+			<div class='avatar-wrapper'>
+				<img src='{{avatar}}' alt='Аватар' />
+				<div class='avatar-overlay'>Поменять аватар</div>
+			</div>
+		</div>
+
+		<form class='profile-edit-form'>
+
+			<div class='field'>
+				<span>Почта</span>
+				<input name='email' type='email' value='{{email}}' />
+			</div>
+
+			<div class='field'>
+				<span>Логин</span>
+				<input name='login' type='text' value='{{login}}' />
+			</div>
+
+			<div class='field'>
+				<span>Имя</span>
+				<input name='first_name' type='text' value='{{first_name}}' />
+			</div>
+
+			<div class='field'>
+				<span>Фамилия</span>
+				<input name='second_name' type='text' value='{{second_name}}' />
+			</div>
+
+			<div class='field'>
+				<span>Имя в чате</span>
+				<input name='display_name' type='text' value='{{display_name}}' />
+			</div>
+
+			<div class='field'>
+				<span>Телефон</span>
+				<input name='phone' type='text' value='{{phone}}' />
+			</div>
+
+			<div class='save-btn-wrapper'>
+				{{{saveButton}}}
+			</div>
+
+		</form>
+
+	</div>
+
+</main>

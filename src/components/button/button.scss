@@ -1,0 +1,31 @@
+.button {
+	width: 280px;
+	height: 37px;
+
+	background: #3369f3;
+	color: #ffffff;
+
+	border: none;
+	border-radius: 8px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	cursor: pointer;
+
+	font-family: Inter, sans-serif;
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 13px;
+
+	transition: background 0.2s;
+
+	&:hover {
+		background: #2b5dde;
+	}
+
+	&:active {
+		background: #244fbe;
+	}
+}

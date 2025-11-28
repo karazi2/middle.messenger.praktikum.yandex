@@ -1,0 +1,24 @@
+{
+	"name": "sprint_1",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"start": "vite",
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"@types/handlebars": "^4.0.40",
+		"sass": "^1.94.1",
+		"typescript": "~5.9.3",
+		"vite": "^7.1.7"
+	},
+	"dependencies": {
+		"handlebars": "^4.7.8"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	}
+}

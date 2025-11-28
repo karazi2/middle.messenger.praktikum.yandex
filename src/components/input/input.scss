@@ -1,0 +1,54 @@
+.input {
+	position: relative;
+	width: 280px;
+	margin-bottom: 24px;
+}
+
+.input__field {
+	width: 100%;
+	border: none;
+	border-bottom: 1px solid #3369f3;
+	padding: 16px 0 4px;
+
+	font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 13px;
+	color: #1e1e1e;
+
+	outline: none;
+	background: transparent;
+
+	&::placeholder {
+		color: transparent;
+	}
+}
+
+.input__label {
+	position: absolute;
+	left: 0;
+	top: 16px;
+
+	font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 13px;
+	color: #999999;
+
+	pointer-events: none;
+	transform-origin: left top;
+	transition: top 0.15s ease, font-size 0.15s ease;
+}
+
+.input__field:focus + .input__label,
+.input__field:not(:placeholder-shown) + .input__label {
+	top: 0;
+	font-size: 9px;
+}
+
+.input__error {
+	margin-top: 4px;
+	font-size: 9px;
+	line-height: 9px;
+	color: #ff2f2f;
+}

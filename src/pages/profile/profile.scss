@@ -1,0 +1,129 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.profile-card {
+	@include m.page-card(1280px, auto, 0);
+
+	display: flex;
+	overflow: hidden;
+}
+
+.profile-card__side {
+	width: 96px;
+	border-right: 1px solid v.$color-border;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.profile-card__content {
+	flex: 1;
+	padding: 50px 0;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.profile-page__avatar {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 40px;
+}
+
+.avatar-wrapper {
+	position: relative;
+	width: 130px;
+	height: 130px;
+	border-radius: 50%;
+	overflow: hidden;
+	background: #efefef;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.avatar-wrapper img {
+	width: 40px;
+	height: 40px;
+	object-fit: cover;
+	display: block;
+}
+
+.avatar-overlay {
+	position: absolute;
+	inset: 0;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background: rgba(0, 0, 0, 0.4);
+	color: #ffffff;
+	font-size: 13px;
+
+	opacity: 0;
+	transition: opacity 0.2s ease;
+}
+
+.avatar-wrapper:hover .avatar-overlay {
+	opacity: 1;
+}
+
+.divider {
+	width: 510px;
+	height: 1px;
+	background: v.$color-border;
+}
+
+.profile-page__name {
+	font-size: 16px;
+	font-weight: 600;
+	color: v.$color-text-main;
+	margin-top: 15px;
+}
+
+.profile-page__fields {
+	width: 510px;
+	@include m.form-column(18px);
+	margin-bottom: 40px;
+}
+
+.profile-page__fields .field {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	padding-bottom: 8px;
+	border-bottom: 1px solid v.$color-border;
+}
+
+.profile-page__fields .field span:first-child {
+	font-size: 13px;
+	color: v.$color-text-main;
+	font-weight: 500;
+}
+
+.profile-page__fields .field span:last-child {
+	font-size: 13px;
+	color: v.$color-text-muted;
+	text-align: right;
+	font-weight: 500;
+}
+
+.profile-page__actions {
+	width: 510px;
+	@include m.form-column(12px);
+}
+
+.profile-page__actions a {
+	@include m.primary-link(13px, 500);
+}
+
+.profile-page__actions .logout {
+	color: #ff0000;
+}

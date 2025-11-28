@@ -1,0 +1,49 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.profile-edit-form {
+	width: 510px;
+	@include m.form-column(18px);
+}
+
+.profile-edit-form .field {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	padding-bottom: 8px;
+	border-bottom: 1px solid v.$color-border;
+}
+
+.profile-edit-form .field span {
+	font-size: 13px;
+	color: v.$color-text-main;
+	font-weight: 500;
+}
+
+.profile-edit-form input {
+	border: none;
+	outline: none;
+
+	width: 260px;
+	text-align: right;
+
+	font-size: 13px;
+	color: v.$color-text-muted;
+	font-weight: 500;
+
+	background: transparent;
+}
+
+.save-btn-wrapper {
+	width: 100%;
+
+	display: flex;
+	justify-content: center;
+
+	margin-top: 30px;
+}
+
+.save-btn-wrapper .button {
+	width: 280px;
+}

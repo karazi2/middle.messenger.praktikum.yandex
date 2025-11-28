@@ -1,0 +1,30 @@
+@use '../../styles/mixins' as m;
+
+.registration-page {
+	@include m.page-card(340px, auto, 52px 30px 30px 30px);
+}
+
+.registration-page h1 {
+	@include m.page-title;
+	margin-bottom: 50px;
+}
+
+.registration-form {
+	@include m.form-column(24px);
+}
+
+.registration-form__fields {
+	@include m.form-column(5px);
+	margin-bottom: 30px;
+}
+
+.registration-form__actions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+}
+
+.registration-form__actions a {
+	@include m.primary-link(11px, 500);
+}
