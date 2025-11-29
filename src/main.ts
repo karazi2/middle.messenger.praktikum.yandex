@@ -1,18 +1,22 @@
 import './styles/main.scss'
 import { Nav } from './components/nav'
 import avatarImg from './assets/images/Union.jpg'
-import { SignInPage } from './pages/signIn/signInPage'
-import { RegistrationPage } from './pages/registration/registrationPage'
-import { ChatsListPage } from './pages/chatsList/chatsList'
-import { ChatPage } from './pages/chatsPage/chatsPage'
-import { ProfilePage } from './pages/profile/profile'
-import { ProfileEditPage } from './pages/profileEdit/profileEdit'
-import { PasswordEditPage } from './pages/passwordEdit/passwordEdit'
-import { Error404Page } from './pages/error/error404/error404'
-import { Error5xxPage } from './pages/error/error5xx/error5xx'
+
+import { SignInPage } from './pages/signIn'
+import { RegistrationPage } from './pages/registration'
+import { ChatPage } from './pages/chatsPage'
+import { ProfilePage } from './pages/profile'
+import { ProfileEditPage } from './pages/profileEdit'
+import { PasswordEditPage } from './pages/passwordEdit'
+import { Error404Page } from './pages/error/error404'
+import { Error5xxPage } from './pages/error/error5xx'
+
+import { setupFormValidation } from './utils/validation/validateForm'
+import { chatsController } from './controllers/ChatsController'
 
 const nav = document.querySelector('#nav')!
 const app = document.querySelector('#app')!
+
 nav.innerHTML = new Nav().render()
 
 const mockUser = {
@@ -25,42 +29,67 @@ const mockUser = {
 	phone: '+79998887766',
 }
 
-function openPage(page: string) {
+function renderBlock(pageInstance: { getContent: () => HTMLElement | null }) {
+	const content = pageInstance.getContent()
+	if (!content) return
+
+	app.innerHTML = ''
+	app.appendChild(content)
+}
+
+function attachValidation(formSelector: string) {
+	const form = document.querySelector(formSelector) as HTMLFormElement | null
+	if (form) {
+		setupFormValidation(form)
+	}
+}
+
+function openPage(page: string, options?: { chatId?: string }) {
 	switch (page) {
 		case 'signIn':
-			app.innerHTML = new SignInPage().render()
+			renderBlock(new SignInPage())
+			attachValidation('#signin-form')
 			break
 
 		case 'registration':
-			app.innerHTML = new RegistrationPage().render()
+			renderBlock(new RegistrationPage())
+			attachValidation('#registration-form')
 			break
 
-		case 'chats':
-			app.innerHTML = new ChatsListPage().render()
-			break
+		case 'chat': {
+			if (options?.chatId) {
+				chatsController.setActiveChat(options.chatId)
+			}
 
-		case 'chat':
-			app.innerHTML = new ChatPage().render()
+			const forceNoActive = !options?.chatId
+			const props = chatsController.getChatsPageProps(forceNoActive)
+			const chatPage = new ChatPage(props)
+
+			renderBlock(chatPage)
+			attachValidation('#message-form')
 			break
+		}
 
 		case 'profile':
-			app.innerHTML = new ProfilePage(mockUser).render()
+			renderBlock(new ProfilePage(mockUser))
 			break
 
 		case 'profileEdit':
-			app.innerHTML = new ProfileEditPage(mockUser).render()
+			renderBlock(new ProfileEditPage(mockUser))
+			attachValidation('#edit-profile-form')
 			break
 
 		case 'passwordEdit':
-			app.innerHTML = new PasswordEditPage(mockUser).render()
+			renderBlock(new PasswordEditPage(mockUser))
+			attachValidation('#password-edit-form')
 			break
 
 		case '404':
-			app.innerHTML = new Error404Page().render()
+			renderBlock(new Error404Page())
 			break
 
 		case '500':
-			app.innerHTML = new Error5xxPage().render()
+			renderBlock(new Error5xxPage())
 			break
 	}
 }
@@ -71,6 +100,20 @@ nav.addEventListener('click', e => {
 		const page = btn.dataset.page
 		if (page) openPage(page)
 	}
+})
+
+document.addEventListener('click', event => {
+	const target = event.target as HTMLElement
+	const chatLink = target.closest('.chat-item') as HTMLElement | null
+
+	if (!chatLink) return
+
+	event.preventDefault()
+
+	const chatId = chatLink.dataset.chatId
+	if (!chatId) return
+
+	openPage('chat', { chatId })
 })
 
 openPage('signIn')

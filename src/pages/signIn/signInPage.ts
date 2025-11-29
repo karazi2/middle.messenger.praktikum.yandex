@@ -2,35 +2,47 @@ import './signIn.scss'
 
 import Handlebars from 'handlebars'
 import templateSource from './signInPage.hbs?raw'
-import { Input } from '../../components/input/input.ts'
-import { Button } from '../../components/button/button.ts'
 
-export class SignInPage {
-	private loginInput = new Input({
-		name: 'login',
-		type: 'text',
-		placeholder: 'Логин',
-	})
+import { Input } from '../../components/input'
+import { Button } from '../../components/button'
+import { Block } from '../../core/Block'
 
-	private passwordInput = new Input({
-		name: 'password',
-		type: 'password',
-		placeholder: 'Пароль',
-	})
+const template = Handlebars.compile(templateSource)
 
-	private submitButton = new Button({
-		text: 'Вход',
-		type: 'submit',
-	})
+interface SignInPageProps {
+	[key: string]: unknown
+}
 
-	private template: Handlebars.TemplateDelegate
+export class SignInPage extends Block<SignInPageProps> {
+	private loginInput?: Input
+	private passwordInput?: Input
+	private submitButton?: Button
 
 	constructor() {
-		this.template = Handlebars.compile(templateSource)
+		super('main', {})
 	}
 
-	render(): string {
-		return this.template({
+	protected render(): string {
+		if (!this.loginInput || !this.passwordInput || !this.submitButton) {
+			this.loginInput = new Input({
+				name: 'login',
+				type: 'text',
+				placeholder: 'Логин',
+			})
+
+			this.passwordInput = new Input({
+				name: 'password',
+				type: 'password',
+				placeholder: 'Пароль',
+			})
+
+			this.submitButton = new Button({
+				text: 'Вход',
+				type: 'submit',
+			})
+		}
+
+		return template({
 			loginInput: this.loginInput.render(),
 			passwordInput: this.passwordInput.render(),
 			submitButton: this.submitButton.render(),

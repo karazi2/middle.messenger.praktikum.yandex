@@ -3,29 +3,33 @@ import Handlebars from 'handlebars'
 import templateSource from './passwordEdit.hbs?raw'
 
 import type { UserProfileData } from '../../types/userProfileEdit'
-import { Button } from '../../components/button/button'
-import { BackButton } from '../../components/backButton/backButton'
+import { Button } from '../../components/button'
+import { BackButton } from '../../components/backButton'
+import { Block } from '../../core/Block'
 
-export class PasswordEditPage {
-	private template: Handlebars.TemplateDelegate
-	private data: UserProfileData
+const template = Handlebars.compile(templateSource)
 
+interface PasswordEditPageProps {
+	avatar: string
+	[key: string]: unknown
+}
+
+export class PasswordEditPage extends Block<PasswordEditPageProps> {
 	constructor(data: UserProfileData) {
-		this.data = data
-		this.template = Handlebars.compile(templateSource)
+		super('main', { avatar: data.avatar })
 	}
 
-	render() {
+	protected render(): string {
 		const backButton = new BackButton().render()
+		const submitButton = new Button({
+			text: 'Сохранить',
+			type: 'submit',
+		}).render()
 
-		return this.template({
-			avatar: this.data.avatar,
+		return template({
+			avatar: this.props.avatar,
 			backButton,
-
-			submitButton: new Button({
-				text: 'Сохранить',
-				type: 'submit',
-			}).render(),
+			submitButton,
 		})
 	}
 }
