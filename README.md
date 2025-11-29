@@ -4,7 +4,7 @@
 
 Во втором спринте проект переведён на TypeScript, добавлен компонентный подход на базе собственного класса `Block` и `EventBus`, реализована страница со списком чатов и лентой переписки, общая валидация форм, класс для HTTP-запросов и линтеры (ESLint, Stylelint, TypeScript type-check).
 
----
+## Сделана страница чатов - есть страница со списком чатов и переход на конкретный чат по клику по элементу списка
 
 ## Деплой
 
@@ -22,15 +22,40 @@
 ### TypeScript
 
 - Вся клиентская логика переписана на **TypeScript**.
-- Включён строгий режим и обязательные настройки из чеклиста:
-  - `noImplicitAny: true`
-  - `noUnusedLocals: true`
-  - `noUnusedParameters: true`
-  - `sourceMap: true`
-  - `strictNullChecks: true`
-  - `strict: true`
-- Проверка типов выполняется командой:
 
-```bash
-npm run type-check   # tsc --noEmit
-```
+# Запуск dev-сервера на http://localhost:3000
+
+npm run start
+
+# или
+
+npm run dev
+
+# Сборка проекта (TypeScript + Vite)
+
+npm run build
+
+# Предпросмотр собранной версии
+
+npm run preview
+
+# Линтинг TypeScript-кода
+
+npm run lint:ts
+
+# Линтинг стилей
+
+npm run lint:styles
+
+# Проверка типов TypeScript
+
+npm run type-check
+
+# Запуск тестов
+
+npm test
+
+# Полная проверка: ESLint + Stylelint + TS + тесты
+
+npm run lint
+npm run validate
