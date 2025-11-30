@@ -2,14 +2,20 @@ import '../error.scss'
 import Handlebars from 'handlebars'
 import templateSource from './error5xx.hbs?raw'
 
-export class Error5xxPage {
-	private template: Handlebars.TemplateDelegate
+import { Block } from '../../../core/Block'
 
+const template = Handlebars.compile(templateSource)
+
+interface ErrorPageProps {
+	[key: string]: unknown
+}
+
+export class Error5xxPage extends Block<ErrorPageProps> {
 	constructor() {
-		this.template = Handlebars.compile(templateSource)
+		super('main', {})
 	}
 
 	render(): string {
-		return this.template({})
+		return template({})
 	}
 }

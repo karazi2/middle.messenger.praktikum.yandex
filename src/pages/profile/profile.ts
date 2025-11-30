@@ -1,26 +1,28 @@
 import './profile.scss'
 import Handlebars from 'handlebars'
 import templateSource from './profile.hbs?raw'
+
 import type { UserProfileData } from '../../types/userProfileEdit'
-import { BackButton } from '../../components/backButton/backButton'
+import { BackButton } from '../../components/backButton'
+import { Block } from '../../core/Block'
 
-export class ProfilePage {
-	private template: Handlebars.TemplateDelegate<
-		UserProfileData & { backButton: string }
-	>
-	private data: UserProfileData
+const template = Handlebars.compile(templateSource)
 
+type ProfilePageProps = UserProfileData & {
+	backButton?: string
+	[key: string]: unknown
+}
+
+export class ProfilePage extends Block<ProfilePageProps> {
 	constructor(data: UserProfileData) {
-		this.data = data
-		this.template = Handlebars.compile(templateSource)
+		super('main', data as ProfilePageProps)
 	}
 
-	render() {
-		// используем настоящий компонент
+	render(): string {
 		const backButton = new BackButton().render()
 
-		return this.template({
-			...this.data,
+		return template({
+			...this.props,
 			backButton,
 		})
 	}

@@ -5,7 +5,6 @@ export class Nav {
         <button data-page="signIn">Sign In</button>
         <button data-page="registration">Registration</button>
 
-        <button data-page="chats">Chats List</button>
         <button data-page="chat">Chat</button>
 
         <button data-page="profile">Profile</button>
