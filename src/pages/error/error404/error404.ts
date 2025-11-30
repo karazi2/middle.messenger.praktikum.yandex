@@ -15,7 +15,7 @@ export class Error404Page extends Block<ErrorPageProps> {
 		super('main', {})
 	}
 
-	protected render(): string {
+	render(): string {
 		return template({})
 	}
 }

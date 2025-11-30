@@ -11,7 +11,6 @@ import { PasswordEditPage } from './pages/passwordEdit'
 import { Error404Page } from './pages/error/error404'
 import { Error5xxPage } from './pages/error/error5xx'
 
-import { setupFormValidation } from './utils/validation/validateForm'
 import { chatsController } from './controllers/ChatsController'
 
 const nav = document.querySelector('#nav')!
@@ -37,23 +36,14 @@ function renderBlock(pageInstance: { getContent: () => HTMLElement | null }) {
 	app.appendChild(content)
 }
 
-function attachValidation(formSelector: string) {
-	const form = document.querySelector(formSelector) as HTMLFormElement | null
-	if (form) {
-		setupFormValidation(form)
-	}
-}
-
 function openPage(page: string, options?: { chatId?: string }) {
 	switch (page) {
 		case 'signIn':
 			renderBlock(new SignInPage())
-			attachValidation('#signin-form')
 			break
 
 		case 'registration':
 			renderBlock(new RegistrationPage())
-			attachValidation('#registration-form')
 			break
 
 		case 'chat': {
@@ -66,7 +56,6 @@ function openPage(page: string, options?: { chatId?: string }) {
 			const chatPage = new ChatPage(props)
 
 			renderBlock(chatPage)
-			attachValidation('#message-form')
 			break
 		}
 
@@ -76,12 +65,10 @@ function openPage(page: string, options?: { chatId?: string }) {
 
 		case 'profileEdit':
 			renderBlock(new ProfileEditPage(mockUser))
-			attachValidation('#edit-profile-form')
 			break
 
 		case 'passwordEdit':
 			renderBlock(new PasswordEditPage(mockUser))
-			attachValidation('#password-edit-form')
 			break
 
 		case '404':
@@ -94,7 +81,7 @@ function openPage(page: string, options?: { chatId?: string }) {
 	}
 }
 
-nav.addEventListener('click', e => {
+nav.addEventListener('click', (e) => {
 	const btn = e.target as HTMLElement
 	if (btn.tagName === 'BUTTON') {
 		const page = btn.dataset.page
@@ -102,7 +89,7 @@ nav.addEventListener('click', e => {
 	}
 })
 
-document.addEventListener('click', event => {
+document.addEventListener('click', (event) => {
 	const target = event.target as HTMLElement
 	const chatLink = target.closest('.chat-item') as HTMLElement | null
 

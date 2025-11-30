@@ -1,4 +1,5 @@
 import './chatItem.scss'
+import { Block } from '../../core/Block'
 
 export interface ChatItemProps {
 	id: string
@@ -8,13 +9,13 @@ export interface ChatItemProps {
 	time: string
 	unreadCount?: number
 	isActive?: boolean
+
+	[key: string]: string | number | boolean | undefined
 }
 
-export class ChatItem {
-	private props: ChatItemProps
-
+export class ChatItem extends Block<ChatItemProps> {
 	constructor(props: ChatItemProps) {
-		this.props = props
+		super('div', props)
 	}
 
 	render(): string {

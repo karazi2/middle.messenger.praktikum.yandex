@@ -6,6 +6,10 @@ import templateSource from './registrationPage.hbs?raw'
 import { Input } from '../../components/input'
 import { Button } from '../../components/button'
 import { Block } from '../../core/Block'
+import {
+	handleFormBlur,
+	handleFormSubmit,
+} from '../../utils/validation/validateForm'
 
 const template = Handlebars.compile(templateSource)
 
@@ -13,7 +17,11 @@ interface RegistrationPageProps {
 	[key: string]: unknown
 }
 
-export class RegistrationPage extends Block<RegistrationPageProps> {
+type RegistrationPageBlockProps = RegistrationPageProps & {
+	events?: Record<string, EventListener>
+}
+
+export class RegistrationPage extends Block<RegistrationPageBlockProps> {
 	private emailInput?: Input
 	private loginInput?: Input
 	private firstNameInput?: Input
@@ -24,10 +32,15 @@ export class RegistrationPage extends Block<RegistrationPageProps> {
 	private submitButton?: Button
 
 	constructor() {
-		super('main', {})
+		super('main', {
+			events: {
+				submit: handleFormSubmit,
+				blur: handleFormBlur,
+			},
+		})
 	}
 
-	protected render(): string {
+	render(): string {
 		if (!this.emailInput) {
 			this.emailInput = new Input({
 				name: 'email',

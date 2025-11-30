@@ -1,3 +1,4 @@
+// src/pages/signIn/signInPage.ts
 import './signIn.scss'
 
 import Handlebars from 'handlebars'
@@ -6,6 +7,10 @@ import templateSource from './signInPage.hbs?raw'
 import { Input } from '../../components/input'
 import { Button } from '../../components/button'
 import { Block } from '../../core/Block'
+import {
+	handleFormBlur,
+	handleFormSubmit,
+} from '../../utils/validation/validateForm'
 
 const template = Handlebars.compile(templateSource)
 
@@ -19,10 +24,15 @@ export class SignInPage extends Block<SignInPageProps> {
 	private submitButton?: Button
 
 	constructor() {
-		super('main', {})
+		super('main', {
+			events: {
+				submit: handleFormSubmit,
+				blur: handleFormBlur,
+			},
+		})
 	}
 
-	protected render(): string {
+	render(): string {
 		if (!this.loginInput || !this.passwordInput || !this.submitButton) {
 			this.loginInput = new Input({
 				name: 'login',

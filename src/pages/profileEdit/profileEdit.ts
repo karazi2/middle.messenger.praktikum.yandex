@@ -6,6 +6,10 @@ import { Button } from '../../components/button'
 import type { UserProfileData } from '../../types/userProfileEdit'
 import { BackButton } from '../../components/backButton'
 import { Block } from '../../core/Block'
+import {
+	handleFormBlur,
+	handleFormSubmit,
+} from '../../utils/validation/validateForm'
 
 const template = Handlebars.compile(templateSource)
 
@@ -15,12 +19,22 @@ type ProfileEditPageProps = UserProfileData & {
 	[key: string]: unknown
 }
 
-export class ProfileEditPage extends Block<ProfileEditPageProps> {
+type ProfileEditPageBlockProps = ProfileEditPageProps & {
+	events?: Record<string, EventListener>
+}
+
+export class ProfileEditPage extends Block<ProfileEditPageBlockProps> {
 	constructor(data: UserProfileData) {
-		super('main', data as ProfileEditPageProps)
+		super('main', {
+			...(data as ProfileEditPageProps),
+			events: {
+				submit: handleFormSubmit,
+				blur: handleFormBlur,
+			},
+		})
 	}
 
-	protected render(): string {
+	render(): string {
 		const backButton = new BackButton().render()
 		const saveButton = new Button({
 			text: 'Сохранить',

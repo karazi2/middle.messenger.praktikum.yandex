@@ -15,7 +15,7 @@ export class Error5xxPage extends Block<ErrorPageProps> {
 		super('main', {})
 	}
 
-	protected render(): string {
+	render(): string {
 		return template({})
 	}
 }

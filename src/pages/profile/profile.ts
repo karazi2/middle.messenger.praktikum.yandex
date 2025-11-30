@@ -18,7 +18,7 @@ export class ProfilePage extends Block<ProfilePageProps> {
 		super('main', data as ProfilePageProps)
 	}
 
-	protected render(): string {
+	render(): string {
 		const backButton = new BackButton().render()
 
 		return template({

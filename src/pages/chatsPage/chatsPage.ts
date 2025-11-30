@@ -6,31 +6,45 @@ import type { ChatsPageProps } from './types'
 import { ChatItem } from '../../components/chatItem'
 import { Message } from '../../components/message'
 import { Block } from '../../core/Block'
+import {
+	handleFormBlur,
+	handleFormSubmit,
+} from '../../utils/validation/validateForm'
 
 const template = Handlebars.compile(templateSource)
 
-export class ChatPage extends Block<ChatsPageProps> {
+type ChatPageBlockProps = ChatsPageProps & {
+	events?: Record<string, EventListener>
+}
+
+export class ChatPage extends Block<ChatPageBlockProps> {
 	constructor(props: ChatsPageProps) {
-		super('main', props)
+		super('main', {
+			...props,
+			events: {
+				submit: handleFormSubmit,
+				blur: handleFormBlur,
+			},
+		})
 	}
 
-	protected render(): string {
+	render(): string {
 		const { chats, activeChat, messages } = this.props
 
 		const hasActiveChat = Boolean(activeChat)
 
 		const chatsListHTML = chats
-			.map(chat =>
+			.map((chat) =>
 				new ChatItem({
 					...chat,
 					isActive:
 						hasActiveChat && activeChat ? chat.id === activeChat.id : false,
-				}).render()
+				}).render(),
 			)
 			.join('')
 
 		const messagesListHTML = hasActiveChat
-			? messages.map(msg => new Message(msg).render()).join('')
+			? messages.map((msg) => new Message(msg).render()).join('')
 			: ''
 
 		const activeChatHeaderHTML =
