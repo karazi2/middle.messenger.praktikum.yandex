@@ -47,12 +47,7 @@ export abstract class Block<P extends Props = Props> {
 		this.eventBus.emit(Block.EVENTS.FLOW_CDU)
 	}
 
-	// 🔹 делаем render публичным
 	abstract render(): string
-
-	// =========================
-	// ВНУТРЕННИЙ ЖИЗНЕННЫЙ ЦИКЛ
-	// =========================
 
 	private _registerEvents(): void {
 		this.eventBus.on(Block.EVENTS.INIT, this._init.bind(this))

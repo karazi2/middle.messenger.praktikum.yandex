@@ -1,4 +1,3 @@
-// src/utils/validation/validateForm.ts
 import { validateField } from './validateField'
 import type { FieldName } from './rules'
 import { getFormData } from '../form/getFormData'
@@ -28,7 +27,6 @@ function showError(input: HTMLInputElement, message: string | null) {
 	}
 }
 
-// 🔹 обработчик blur — принимает общий Event, не FocusEvent
 export function handleFormBlur(event: Event): void {
 	const target = event.target as HTMLElement
 
@@ -38,7 +36,6 @@ export function handleFormBlur(event: Event): void {
 	}
 }
 
-// 🔹 обработчик submit — тоже общий Event
 export function handleFormSubmit(event: Event): void {
 	event.preventDefault()
 
