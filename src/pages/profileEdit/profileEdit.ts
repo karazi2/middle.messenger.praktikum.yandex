@@ -1,31 +1,50 @@
 import './profileEdit.scss'
 import Handlebars from 'handlebars'
 import templateSource from './profileEdit.hbs?raw'
-import { Button } from '../../components/button/button'
+
+import { Button } from '../../components/button'
 import type { UserProfileData } from '../../types/userProfileEdit'
-import { BackButton } from '../../components/backButton/backButton'
+import { BackButton } from '../../components/backButton'
+import { Block } from '../../core/Block'
+import {
+	handleFormBlur,
+	handleFormSubmit,
+} from '../../utils/validation/validateForm'
 
-export class ProfileEditPage {
-	private template: Handlebars.TemplateDelegate
-	private data: UserProfileData
+const template = Handlebars.compile(templateSource)
 
+type ProfileEditPageProps = UserProfileData & {
+	backButton?: string
+	saveButton?: string
+	[key: string]: unknown
+}
+
+type ProfileEditPageBlockProps = ProfileEditPageProps & {
+	events?: Record<string, EventListener>
+}
+
+export class ProfileEditPage extends Block<ProfileEditPageBlockProps> {
 	constructor(data: UserProfileData) {
-		this.data = data
-		this.template = Handlebars.compile(templateSource)
+		super('main', {
+			...(data as ProfileEditPageProps),
+			events: {
+				submit: handleFormSubmit,
+				blur: handleFormBlur,
+			},
+		})
 	}
 
-	render() {
+	render(): string {
 		const backButton = new BackButton().render()
+		const saveButton = new Button({
+			text: 'Сохранить',
+			type: 'submit',
+		}).render()
 
-		return this.template({
-			...this.data,
-
+		return template({
+			...this.props,
 			backButton,
-
-			saveButton: new Button({
-				text: 'Сохранить',
-				type: 'submit',
-			}).render(),
+			saveButton,
 		})
 	}
 }
