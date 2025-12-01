@@ -1,4 +1,3 @@
-// src/pages/signIn/signInPage.ts
 import './signIn.scss'
 
 import Handlebars from 'handlebars'

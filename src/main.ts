@@ -13,10 +13,16 @@ import { Error5xxPage } from './pages/error/error5xx'
 
 import { chatsController } from './controllers/ChatsController'
 
-const nav = document.querySelector('#nav')!
-const app = document.querySelector('#app')!
+const navContainer = document.querySelector('#nav') as HTMLElement
+const app = document.querySelector('#app') as HTMLElement
 
-nav.innerHTML = new Nav().render()
+const navComponent = new Nav()
+const navContent = navComponent.getContent()
+
+if (navContent) {
+	navContainer.innerHTML = ''
+	navContainer.appendChild(navContent)
+}
 
 const mockUser = {
 	avatar: avatarImg,
@@ -81,7 +87,7 @@ function openPage(page: string, options?: { chatId?: string }) {
 	}
 }
 
-nav.addEventListener('click', (e) => {
+navContainer.addEventListener('click', (e) => {
 	const btn = e.target as HTMLElement
 	if (btn.tagName === 'BUTTON') {
 		const page = btn.dataset.page

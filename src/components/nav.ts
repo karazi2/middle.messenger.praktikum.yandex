@@ -1,19 +1,27 @@
-export class Nav {
-	render(): string {
+import { Block } from '../core/Block'
+
+interface NavProps {
+	[key: string]: unknown
+}
+
+export class Nav extends Block<NavProps> {
+	constructor() {
+		super('nav', {})
+	}
+
+	public render(): string {
 		return `
-      <nav class="nav">
-        <button data-page="signIn">Sign In</button>
-        <button data-page="registration">Registration</button>
+      <button type="button" data-page="signIn">Sign In</button>
+      <button type="button" data-page="registration">Registration</button>
 
-        <button data-page="chat">Chat</button>
+      <button type="button" data-page="chat">Chat</button>
 
-        <button data-page="profile">Profile</button>
-        <button data-page="profileEdit">Profile Edit</button>
-        <button data-page="passwordEdit">Password Edit</button>
+      <button type="button" data-page="profile">Profile</button>
+      <button type="button" data-page="profileEdit">Profile Edit</button>
+      <button type="button" data-page="passwordEdit">Password Edit</button>
 
-        <button data-page="404">404</button>
-        <button data-page="500">5xx</button>
-      </nav>
+      <button type="button" data-page="404">404</button>
+      <button type="button" data-page="500">5xx</button>
     `
 	}
 }

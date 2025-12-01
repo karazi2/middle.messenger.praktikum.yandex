@@ -1,31 +1,31 @@
 import './message.scss'
+import { Block } from '../../core/Block'
 
 export interface MessageProps {
-  text: string
-  time: string
-  isMine?: boolean
-  isRead?: boolean
+	text: string
+	time: string
+	isMine?: boolean
+	isRead?: boolean
+	[key: string]: unknown
 }
 
-export class Message {
-  private props: MessageProps
+export class Message extends Block<MessageProps> {
+	constructor(props: MessageProps) {
+		super('div', props)
+	}
 
-  constructor(props: MessageProps) {
-    this.props = props
-  }
+	public render(): string {
+		const { text, time, isMine, isRead } = this.props
 
-  render(): string {
-    const { text, time, isMine, isRead } = this.props
+		const alignmentClass = isMine ? 'message--mine' : 'message--theirs'
 
-    const alignmentClass = isMine ? 'message--mine' : 'message--theirs'
-
-    const statusHTML = isMine
-      ? `<span class="message__status ${isRead ? 'message__status--read' : ''}">
+		const statusHTML = isMine
+			? `<span class="message__status ${isRead ? 'message__status--read' : ''}">
 					<span class="message__status-icon"></span>
 			   </span>`
-      : ''
+			: ''
 
-    return `
+		return `
       <div class="message ${alignmentClass}">
         <div class="message__bubble">
           <span class="message__text">${text}</span>
@@ -37,5 +37,5 @@ export class Message {
         </div>
       </div>
     `
-  }
+	}
 }
