@@ -1,23 +1,26 @@
 import './button.scss'
+import { Block } from '../../core/Block'
 
 export interface ButtonProps {
 	text: string
-	type?: 'button' | 'submit'
+	type?: 'button' | 'submit' | 'reset'
+	[key: string]: unknown
 }
 
-export class Button {
-	private props: ButtonProps
+export class Button extends Block<ButtonProps> {
 	constructor(props: ButtonProps) {
-		this.props = props
+		super('div', props)
 	}
 
-	render(): string {
+	public render(): string {
+		const { text, type = 'button' } = this.props
+
 		return `
       <button 
         class="button" 
-        type="${this.props.type || 'button'}"
+        type="${type}"
       >
-        ${this.props.text}
+        ${text}
       </button>
     `
 	}

@@ -1,6 +1,54 @@
-<main class='stub-page'>
-	<h1>Чат появится в следующем спринте</h1>
-	<p>Страница находится в разработке</p>
+<main class='chat-page'>
+	<aside class='chat-sidebar'>
+		<header class='chat-sidebar__header'>
+			<a href='#' class='chat-sidebar__profile-link'>Профиль ></a>
 
-	<a href='/chats' class='stub-page__link'>Вернуться к списку чатов</a>
+			<input
+				class='chat-sidebar__search'
+				type='text'
+				name='search'
+				placeholder='Поиск'
+			/>
+		</header>
+
+		<div class='chat-sidebar__list'>
+			{{{chatsList}}}
+		</div>
+	</aside>
+
+	<section class='chat-thread'>
+		{{#if hasActiveChat}}
+			<header class='chat-thread__header'>
+				{{{activeChatHeader}}}
+			</header>
+
+			<div class='chat-thread__messages'>
+				{{{messagesList}}}
+			</div>
+
+			<footer class='chat-thread__footer'>
+				<form id='message-form' class='chat-thread__form'>
+					<input
+						class='chat-thread__input'
+						type='text'
+						name='message'
+						placeholder='Сообщение'
+					/>
+
+					<button
+						type='submit'
+						class='chat-thread__send'
+						aria-label='Отправить сообщение'
+					>
+						→
+					</button>
+				</form>
+			</footer>
+
+		{{else}}
+			<div class='chat-thread__empty'>
+				Выберите чат чтобы отправить сообщение
+			</div>
+		{{/if}}
+	</section>
 </main>

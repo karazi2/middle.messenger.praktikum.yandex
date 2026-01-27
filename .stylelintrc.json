@@ -1,0 +1,25 @@
+{
+  "ignoreFiles": ["dist/**", "node_modules/**"],
+  "extends": ["stylelint-config-standard-scss"],
+  "plugins": ["stylelint-scss"],
+  "overrides": [
+    {
+      "files": ["**/*.scss"],
+      "customSyntax": "postcss-scss"
+    }
+  ],
+  "rules": {
+    "selector-class-pattern": null,
+    "color-hex-length": null,
+    "color-function-notation": null,
+    "color-function-alias-notation": null,
+    "alpha-value-notation": null,
+    "declaration-empty-line-before": null,
+    "rule-empty-line-before": null,
+    "at-rule-empty-line-before": null,
+    "scss/dollar-variable-empty-line-before": null,
+    "value-keyword-case": null,
+    "shorthand-property-no-redundant-values": null,
+    "declaration-property-value-keyword-no-deprecated": null
+  }
+}
