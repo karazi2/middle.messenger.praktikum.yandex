@@ -1,108 +1,128 @@
-import { queryStringify } from '../utils/helpers/queryStringify'
+type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
-export const HTTP_METHOD = {
-  GET: 'GET',
-  POST: 'POST',
-  PUT: 'PUT',
-  DELETE: 'DELETE',
-} as const
-
-export type HTTPMethod = (typeof HTTP_METHOD)[keyof typeof HTTP_METHOD]
-
-export interface RequestOptions {
-  method?: HTTPMethod
-  data?: unknown
-  headers?: Record<string, string>
-  timeout?: number
+type Options = {
+	method?: HTTPMethod
+	data?: unknown
+	headers?: Record<string, string>
+	timeout?: number
 }
 
-export class HTTPTransport {
-  private readonly baseUrl: string
+export class HTTPError extends Error {
+	status: number
+	reason: string
 
-  constructor(baseUrl = '') {
-    this.baseUrl = baseUrl
-  }
+	constructor(status: number, reason: string) {
+		super(reason)
+		this.status = status
+		this.reason = reason
+	}
+}
 
-  get<T = unknown>(url: string, options: RequestOptions = {}): Promise<T> {
-    return this.request<T>(url, { ...options, method: HTTP_METHOD.GET })
-  }
+const API_BASE = 'https://ya-praktikum.tech/api/v2'
 
-  post<T = unknown>(url: string, options: RequestOptions = {}): Promise<T> {
-    return this.request<T>(url, { ...options, method: HTTP_METHOD.POST })
-  }
+function queryStringify(data: Record<string, unknown>) {
+	const params: string[] = []
 
-  put<T = unknown>(url: string, options: RequestOptions = {}): Promise<T> {
-    return this.request<T>(url, { ...options, method: HTTP_METHOD.PUT })
-  }
+	Object.entries(data).forEach(([key, value]) => {
+		if (value === undefined || value === null) return
+		params.push(
+			`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`,
+		)
+	})
 
-  delete<T = unknown>(url: string, options: RequestOptions = {}): Promise<T> {
-    return this.request<T>(url, { ...options, method: HTTP_METHOD.DELETE })
-  }
+	return params.length ? `?${params.join('&')}` : ''
+}
 
-  private request<T>(url: string, options: RequestOptions): Promise<T> {
-    const {
-      method = HTTP_METHOD.GET,
-      data,
-      headers = {},
-      timeout = 5000,
-    } = options
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return typeof value === 'object' && value !== null
+}
 
-    return new Promise<T>((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
+export default class HTTPTransport {
+	get<T = unknown>(url: string, options: Options = {}) {
+		return this.request<T>(url, { ...options, method: 'GET' })
+	}
 
-      let fullUrl = `${this.baseUrl}${url}`
+	post<T = unknown>(url: string, options: Options = {}) {
+		return this.request<T>(url, { ...options, method: 'POST' })
+	}
 
-      if (method === HTTP_METHOD.GET && data && typeof data === 'object') {
-        const query = queryStringify(data as Record<string, unknown>)
-        if (query) {
-          const sep = fullUrl.includes('?') ? '&' : '?'
-          fullUrl += sep + query
-        }
-      }
+	put<T = unknown>(url: string, options: Options = {}) {
+		return this.request<T>(url, { ...options, method: 'PUT' })
+	}
 
-      xhr.open(method, fullUrl, true)
+	delete<T = unknown>(url: string, options: Options = {}) {
+		return this.request<T>(url, { ...options, method: 'DELETE' })
+	}
 
-      xhr.timeout = timeout
-      xhr.withCredentials = true
+	request<T = unknown>(url: string, options: Options): Promise<T> {
+		const { method = 'GET', data, headers = {}, timeout = 5000 } = options
 
-      xhr.onload = () => {
-        const contentType = xhr.getResponseHeader('Content-Type') ?? ''
-        let response: unknown = xhr.responseText
+		return new Promise((resolve, reject) => {
+			const xhr = new XMLHttpRequest()
+			let fullUrl = `${API_BASE}${url}`
 
-        if (contentType.includes('application/json') && xhr.responseText) {
-          try {
-            response = JSON.parse(xhr.responseText)
-          } catch (error) {
-            console.error('HTTP error:', error)
-          }
-        }
+			if (method === 'GET' && data && isRecord(data)) {
+				fullUrl += queryStringify(data)
+			}
 
-        if (xhr.status >= 200 && xhr.status < 300) {
-          resolve(response as T)
-        } else {
-          reject({
-            status: xhr.status,
-            data: response,
-          })
-        }
-      }
+			xhr.open(method, fullUrl)
+			xhr.withCredentials = true
+			xhr.timeout = timeout
 
-      xhr.onabort = () => reject(new Error('Request aborted'))
-      xhr.onerror = () => reject(new Error('Network error'))
-      xhr.ontimeout = () => reject(new Error('Request timeout'))
+			const isFormData = data instanceof FormData
 
-      Object.entries(headers).forEach(([key, value]) => {
-        xhr.setRequestHeader(key, value)
-      })
+			if (!isFormData && !headers['Content-Type']) {
+				xhr.setRequestHeader('Content-Type', 'application/json')
+			}
+			Object.entries(headers).forEach(([k, v]) => xhr.setRequestHeader(k, v))
 
-      if (method === HTTP_METHOD.GET || data == null) {
-        xhr.send()
-      } else if (data instanceof FormData) {
-        xhr.send(data)
-      } else {
-        xhr.setRequestHeader('Content-Type', 'application/json')
-        xhr.send(JSON.stringify(data))
-      }
-    })
-  }
+			xhr.onload = () => {
+				const status = xhr.status
+				const contentType = xhr.getResponseHeader('Content-Type') || ''
+				const responseText = xhr.responseText
+
+				let parsed: unknown = null
+				if (responseText) {
+					if (contentType.includes('application/json')) {
+						try {
+							parsed = JSON.parse(responseText) as unknown
+						} catch {
+							parsed = responseText
+						}
+					} else {
+						parsed = responseText
+					}
+				}
+
+				if (status >= 200 && status < 300) {
+					resolve(parsed as T)
+					return
+				}
+
+				// ✅ корректно вытаскиваем reason из unknown
+				let reason: unknown = parsed
+				if (isRecord(parsed) && typeof parsed.reason === 'string') {
+					reason = parsed.reason
+				}
+
+				reject(new HTTPError(status, String(reason || `HTTP ${status}`)))
+			}
+
+			xhr.onabort = () => reject(new HTTPError(0, 'Request aborted'))
+			xhr.onerror = () => reject(new HTTPError(0, 'Network error'))
+			xhr.ontimeout = () => reject(new HTTPError(0, 'Request timeout'))
+
+			if (method === 'GET' || data === undefined) {
+				xhr.send()
+				return
+			}
+
+			if (isFormData) {
+				xhr.send(data)
+				return
+			}
+
+			xhr.send(JSON.stringify(data))
+		})
+	}
 }

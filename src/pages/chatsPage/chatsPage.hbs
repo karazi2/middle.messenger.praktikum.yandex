@@ -1,14 +1,20 @@
 <main class='chat-page'>
 	<aside class='chat-sidebar'>
 		<header class='chat-sidebar__header'>
-			<a href='#' class='chat-sidebar__profile-link'>Профиль ></a>
+			<a href='/settings' class='chat-sidebar__profile-link'>Профиль ></a>
 
 			<input
 				class='chat-sidebar__search'
 				type='text'
 				name='search'
 				placeholder='Поиск'
+				value='{{searchValue}}'
 			/>
+
+			<form id='create-chat-form' class='chat-actions'>
+				<input name='title' type='text' placeholder='Название чата' />
+				<button type='submit'>Создать</button>
+			</form>
 		</header>
 
 		<div class='chat-sidebar__list'>
@@ -19,7 +25,50 @@
 	<section class='chat-thread'>
 		{{#if hasActiveChat}}
 			<header class='chat-thread__header'>
-				{{{activeChatHeader}}}
+				<div class='chat-thread__header-left'>
+					<div class='chat-thread__header-title'>
+						{{{activeChatHeader}}}
+					</div>
+
+					<div class='chat-thread__header-users'>
+						{{#if canRemoveUsers}}
+							<form id='add-user-form' class='chat-users-form'>
+								<input
+									name='login'
+									type='text'
+									placeholder='login (добавить)'
+									list='users-suggest-add'
+									autocomplete='off'
+								/>
+								<datalist id='users-suggest-add'></datalist>
+								<button type='submit'>Добавить</button>
+							</form>
+
+							<form id='remove-user-form' class='chat-users-form'>
+								<input
+									name='login'
+									type='text'
+									placeholder='login (удалить)'
+									list='users-added-by-me'
+									autocomplete='off'
+								/>
+								<datalist id='users-added-by-me'></datalist>
+								<button type='submit'>Удалить</button>
+							</form>
+						{{/if}}
+					</div>
+				</div>
+
+				{{#if canDeleteChat}}
+					<button
+						type='button'
+						class='delete-chat-btn'
+						aria-label='Удалить чат'
+						title='Удалить чат'
+					>
+						×
+					</button>
+				{{/if}}
 			</header>
 
 			<div class='chat-thread__messages'>
@@ -34,17 +83,9 @@
 						name='message'
 						placeholder='Сообщение'
 					/>
-
-					<button
-						type='submit'
-						class='chat-thread__send'
-						aria-label='Отправить сообщение'
-					>
-						→
-					</button>
+					<button type='submit' class='chat-thread__send'>→</button>
 				</form>
 			</footer>
-
 		{{else}}
 			<div class='chat-thread__empty'>
 				Выберите чат чтобы отправить сообщение

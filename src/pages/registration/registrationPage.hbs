@@ -13,9 +13,13 @@
 			{{{passwordRepeatInput}}}
 		</div>
 
+		{{#if formError}}
+			<div class='registration-form__error'>{{formError}}</div>
+		{{/if}}
+
 		<div class='registration-form__actions'>
 			{{{submitButton}}}
-			<a href='/signIn'>Войти</a>
+			<a href='/'>Войти</a>
 		</div>
 
 	</form>

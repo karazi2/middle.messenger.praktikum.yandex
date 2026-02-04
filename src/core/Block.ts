@@ -95,6 +95,9 @@ export abstract class Block<P extends Props = Props> {
 			this._element!.removeEventListener(eventName, listener, useCapture)
 		})
 	}
+	onShow(): void | Promise<void> {
+		// по умолчанию ничего
+	}
 
 	private _makePropsProxy(props: P): P {
 		return new Proxy(props, {

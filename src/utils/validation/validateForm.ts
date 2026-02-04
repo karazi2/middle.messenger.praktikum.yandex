@@ -36,11 +36,15 @@ export function handleFormBlur(event: Event): void {
 	}
 }
 
-export function handleFormSubmit(event: Event): void {
+/**
+ * Валидирует форму
+ * @returns true — форма валидна, false — есть ошибки
+ */
+export function handleFormSubmit(event: Event): boolean {
 	event.preventDefault()
 
 	const form = event.target as HTMLFormElement | null
-	if (!form) return
+	if (!form) return false
 
 	const inputs = Array.from(form.elements).filter(
 		(el) => el instanceof HTMLInputElement,
@@ -62,10 +66,12 @@ export function handleFormSubmit(event: Event): void {
 	if (hasError) {
 		// eslint-disable-next-line no-console
 		console.log('Форма не прошла валидацию')
-		return
+		return false
 	}
 
 	const data = getFormData(form)
 	// eslint-disable-next-line no-console
 	console.log('Form data:', data)
+
+	return true
 }

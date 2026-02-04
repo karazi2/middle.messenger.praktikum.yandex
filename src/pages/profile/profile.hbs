@@ -8,9 +8,13 @@
 
 		<div class='profile-page__avatar'>
 			<div class='avatar-wrapper'>
-				<img src='{{avatar}}' alt='Аватар' />
-				<div class='avatar-overlay'>Поменять аватар</div>
+				<img
+					src='{{avatar}}'
+					alt='Аватар'
+					onerror="this.onerror=null;this.src='{{avatarFallback}}';"
+				/>
 			</div>
+
 			<div class='profile-page__name'>{{first_name}}</div>
 		</div>
 
@@ -24,13 +28,14 @@
 			<div class='field'><span>Телефон</span><span>{{phone}}</span></div>
 		</div>
 		<div class='profile-page__actions'>
-			<a href='/profileEdit'>Изменить данные</a>
+			<a href='/settings/edit'>Изменить данные</a>
 			<div class='divider'></div>
 
-			<a href='/passwordEdit'>Изменить пароль</a>
+			<a href='/settings/password'>Изменить пароль</a>
 			<div class='divider'></div>
 
 			<a href='/logout' class='logout'>Выйти</a>
+
 		</div>
 
 	</div>

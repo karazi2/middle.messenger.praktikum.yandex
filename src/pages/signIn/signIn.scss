@@ -34,3 +34,9 @@
 .signin-form__link a {
 	@include m.primary-link(11px, 500);
 }
+.signin-form__error {
+	margin: 10px 0;
+	font-size: 12px;
+	line-height: 14px;
+	color: #ff3b30;
+}

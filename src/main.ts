@@ -1,6 +1,5 @@
 import './styles/main.scss'
 import { Nav } from './components/nav'
-import avatarImg from './assets/images/Union.jpg'
 
 import { SignInPage } from './pages/signIn'
 import { RegistrationPage } from './pages/registration'
@@ -12,9 +11,9 @@ import { Error404Page } from './pages/error/error404'
 import { Error5xxPage } from './pages/error/error5xx'
 
 import { chatsController } from './controllers/ChatsController'
+import Router from './core/Router'
 
 const navContainer = document.querySelector('#nav') as HTMLElement
-const app = document.querySelector('#app') as HTMLElement
 
 const navComponent = new Nav()
 const navContent = navComponent.getContent()
@@ -24,89 +23,60 @@ if (navContent) {
 	navContainer.appendChild(navContent)
 }
 
-const mockUser = {
-	avatar: avatarImg,
-	first_name: 'Иван',
-	second_name: 'Петров',
-	display_name: 'Vanya',
-	login: 'ivan',
-	email: 'ivan@example.com',
-	phone: '+79998887766',
-}
-
-function renderBlock(pageInstance: { getContent: () => HTMLElement | null }) {
-	const content = pageInstance.getContent()
-	if (!content) return
-
-	app.innerHTML = ''
-	app.appendChild(content)
-}
-
-function openPage(page: string, options?: { chatId?: string }) {
-	switch (page) {
-		case 'signIn':
-			renderBlock(new SignInPage())
-			break
-
-		case 'registration':
-			renderBlock(new RegistrationPage())
-			break
-
-		case 'chat': {
-			if (options?.chatId) {
-				chatsController.setActiveChat(options.chatId)
-			}
-
-			const forceNoActive = !options?.chatId
-			const props = chatsController.getChatsPageProps(forceNoActive)
-			const chatPage = new ChatPage(props)
-
-			renderBlock(chatPage)
-			break
-		}
-
-		case 'profile':
-			renderBlock(new ProfilePage(mockUser))
-			break
-
-		case 'profileEdit':
-			renderBlock(new ProfileEditPage(mockUser))
-			break
-
-		case 'passwordEdit':
-			renderBlock(new PasswordEditPage(mockUser))
-			break
-
-		case '404':
-			renderBlock(new Error404Page())
-			break
-
-		case '500':
-			renderBlock(new Error5xxPage())
-			break
+// ---- Route Pages ----
+class SettingsRoutePage extends ProfilePage {
+	constructor() {
+		super()
 	}
 }
 
+class MessengerRoutePage extends ChatPage {
+	constructor() {
+		const props = chatsController.getChatsPageProps(true)
+		super(props)
+	}
+}
+
+class ProfileEditRoutePage extends ProfileEditPage {
+	constructor() {
+		super()
+	}
+}
+
+class PasswordEditRoutePage extends PasswordEditPage {
+	constructor() {
+		super()
+	}
+}
+
+// ---- Router ----
+export const router = new Router('#app')
+
+router
+	.use('/', SignInPage)
+	.use('/sign-up', RegistrationPage)
+	.use('/settings', SettingsRoutePage)
+	.use('/messenger', MessengerRoutePage)
+	.use('/settings/edit', ProfileEditRoutePage)
+	.use('/settings/password', PasswordEditRoutePage)
+	.use('/404', Error404Page)
+	.use('/500', Error5xxPage)
+
+router.start()
+
+// ---- Догрузка чатов при прямом заходе/обновлении на /messenger ----
+if (window.location.pathname === '/messenger') {
+	void chatsController.fetchChats().then(() => {
+		// просто перерендерим текущий роут (без pushState)
+		window.dispatchEvent(new PopStateEvent('popstate'))
+	})
+}
+
+// ---- Nav ----
 navContainer.addEventListener('click', (e) => {
 	const btn = e.target as HTMLElement
-	if (btn.tagName === 'BUTTON') {
-		const page = btn.dataset.page
-		if (page) openPage(page)
-	}
+	if (btn.tagName !== 'BUTTON') return
+
+	const path = btn.dataset.path
+	if (path) router.go(path)
 })
-
-document.addEventListener('click', (event) => {
-	const target = event.target as HTMLElement
-	const chatLink = target.closest('.chat-item') as HTMLElement | null
-
-	if (!chatLink) return
-
-	event.preventDefault()
-
-	const chatId = chatLink.dataset.chatId
-	if (!chatId) return
-
-	openPage('chat', { chatId })
-})
-
-openPage('signIn')
