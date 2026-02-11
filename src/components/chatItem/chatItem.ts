@@ -1,9 +1,10 @@
 import './chatItem.scss'
 import { Block } from '../../core/Block'
+import { escapeHtml } from '../../utils/escapeHtml'
 
 export interface ChatItemProps {
 	id: string
-	avatar: string
+	avatar?: string
 	name: string
 	lastMessage: string
 	time: string
@@ -19,8 +20,7 @@ export class ChatItem extends Block<ChatItemProps> {
 	}
 
 	render(): string {
-		const { id, avatar, name, lastMessage, time, unreadCount, isActive } =
-			this.props
+		const { id, name, lastMessage, time, unreadCount, isActive } = this.props
 
 		const unreadHTML =
 			typeof unreadCount === 'number' && unreadCount > 0
@@ -29,20 +29,24 @@ export class ChatItem extends Block<ChatItemProps> {
 
 		const activeClass = isActive ? ' chat-item--active' : ''
 
+		// ✅ экранируем
+		const safeName = escapeHtml(name)
+		const safeLast = escapeHtml(lastMessage)
+		const safeTime = escapeHtml(time)
+		const safeId = escapeHtml(id)
+
 		return `
-      <a href="#chat-${id}" class="chat-item${activeClass}" data-chat-id="${id}">
-        <div class="chat-item__avatar">
-          <img src="${avatar}" alt="${name}" />
-        </div>
+      <a href="#chat-${safeId}" class="chat-item${activeClass}" data-chat-id="${safeId}">
+        <div class="chat-item__avatar" aria-hidden="true"></div>
 
         <div class="chat-item__content">
           <div class="chat-item__header">
-            <span class="chat-item__name">${name}</span>
-            <span class="chat-item__time">${time}</span>
+            <span class="chat-item__name">${safeName}</span>
+            <span class="chat-item__time">${safeTime}</span>
           </div>
 
           <div class="chat-item__body">
-            <span class="chat-item__last-message">${lastMessage}</span>
+            <span class="chat-item__last-message">${safeLast}</span>
             ${unreadHTML}
           </div>
         </div>

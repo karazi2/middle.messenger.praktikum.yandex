@@ -8,11 +8,15 @@
 			{{{passwordInput}}}
 		</div>
 
+		{{#if formError}}
+			<div class='signin-form__error'>{{formError}}</div>
+		{{/if}}
+
 		<div class='signin-form__actions'>
 			{{{submitButton}}}
 
 			<p class='signin-form__link'>
-				<a href='/registration'>Нет аккаунта?</a>
+				<a href='/sign-up'>Нет аккаунта?</a>
 			</p>
 		</div>
 

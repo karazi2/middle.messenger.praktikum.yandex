@@ -1,5 +1,6 @@
 import './message.scss'
 import { Block } from '../../core/Block'
+import { escapeHtml } from '../../utils/escapeHtml'
 
 export interface MessageProps {
 	text: string
@@ -25,14 +26,18 @@ export class Message extends Block<MessageProps> {
 			   </span>`
 			: ''
 
+		// ✅ защита от XSS
+		const safeText = escapeHtml(text)
+		const safeTime = escapeHtml(time)
+
 		return `
       <div class="message ${alignmentClass}">
         <div class="message__bubble">
-          <span class="message__text">${text}</span>
+          <span class="message__text">${safeText}</span>
 
           <span class="message__meta">
             ${statusHTML}
-            <span class="message__time">${time}</span>
+            <span class="message__time">${safeTime}</span>
           </span>
         </div>
       </div>

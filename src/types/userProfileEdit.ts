@@ -1,4 +1,5 @@
 export interface UserProfileData {
+	id: number
 	avatar: string
 	first_name: string
 	second_name: string

@@ -6,11 +6,22 @@
 
 	<div class='profile-card__content'>
 
-		<div class='profile-page__avatar'>
-			<div class='avatar-wrapper'>
-				<img src='{{avatar}}' alt='Аватар' />
-				<div class='avatar-overlay'>Поменять аватар</div>
-			</div>
+		<div class='avatar-wrapper'>
+			<img
+				src='{{avatar}}'
+				alt='Аватар'
+				onerror="this.onerror=null;this.src='{{avatarFallback}}';"
+			/>
+
+			<input
+				class='avatar-input'
+				type='file'
+				name='avatar'
+				accept='image/*'
+				hidden
+			/>
+
+			<div class='avatar-overlay'>Поменять аватар</div>
 		</div>
 
 		<form id='edit-profile-form' class='profile-edit-form'>

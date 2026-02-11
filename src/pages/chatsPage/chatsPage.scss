@@ -217,3 +217,62 @@
 		outline-offset: 2px;
 	}
 }
+
+.chat-thread__header-left {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-width: 0;
+}
+
+.chat-thread__header-title {
+	min-width: 0;
+}
+
+.chat-thread__header-users {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.chat-users-form {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.delete-chat-btn {
+	margin-left: auto;
+	flex: 0 0 auto;
+
+	width: 32px;
+	height: 32px;
+	border-radius: 10px;
+
+	border: none;
+	background: transparent;
+	cursor: pointer;
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	font-size: 22px;
+	line-height: 1;
+	color: #8a8a8a;
+
+	&:hover {
+		background: rgba(0, 0, 0, 0.06);
+		color: #222;
+	}
+
+	&:active {
+		background: rgba(0, 0, 0, 0.1);
+	}
+
+	&:focus-visible {
+		outline: 2px solid #aac2ff;
+		outline-offset: 2px;
+	}
+}

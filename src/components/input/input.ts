@@ -16,20 +16,22 @@ export class Input extends Block<InputProps> {
 	}
 
 	public render(): string {
-		const { name, type, placeholder, value = '', error } = this.props
+		const { name, type, placeholder, value, error } = this.props
+
+		const valueAttr = value !== undefined ? `value="${String(value)}"` : '' // ← только если value реально передали
 
 		return `
-      <div class="input">
-        <input
-          class="input__field"
-          name="${name}"
-          type="${type}"
-          value="${value}"
-          placeholder=" "
-        />
-        <label class="input__label">${placeholder}</label>
-        ${error ? `<div class="input__error">${error}</div>` : ''}
-      </div>
-    `
+    <div class="input">
+      <input
+        class="input__field"
+        name="${name}"
+        type="${type}"
+        ${valueAttr}
+        placeholder=" "
+      />
+      <label class="input__label">${placeholder}</label>
+      ${error ? `<div class="input__error">${error}</div>` : ''}
+    </div>
+  `
 	}
 }
