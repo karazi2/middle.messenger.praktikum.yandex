@@ -1,0 +1,40 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"noEmit": false,
+		"outDir": "./.mocha-dist",
+		"rootDir": "./src",
+
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+
+		"allowImportingTsExtensions": false,
+		"verbatimModuleSyntax": false,
+		"erasableSyntaxOnly": false,
+
+		"types": ["mocha", "vite/client"],
+		"sourceMap": true,
+
+		"baseUrl": "./src",
+		"paths": {
+			"../controllers/AuthController": ["controllers/AuthController.mock.ts"],
+			"../controllers/AuthController.js": ["controllers/AuthController.mock.ts"]
+		}
+	},
+	"include": [
+		"src/core/**/*.ts",
+		"src/controllers/AuthController.mock.ts",
+		"src/**/*.test.ts"
+	],
+	"exclude": [
+		"src/main.ts",
+		"src/pages/**",
+		"src/components/**",
+		"src/controllers/**",
+		"src/api/**",
+		"src/services/**",
+		"src/stores/**",
+		"src/utils/**",
+		"src/types/**"
+	]
+}
