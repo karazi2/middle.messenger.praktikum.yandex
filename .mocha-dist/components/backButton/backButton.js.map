@@ -1,0 +1,1 @@
+{"version":3,"file":"backButton.js","sourceRoot":"","sources":["../../../src/components/backButton/backButton.ts"],"names":[],"mappings":"AAAA,OAAO,mBAAmB,CAAA;AAC1B,OAAO,EAAE,KAAK,EAAE,MAAM,kBAAkB,CAAA;AAExC,MAAM,OAAO,UAAW,SAAQ,KAAK;IACpC;QACC,KAAK,CAAC,KAAK,EAAE,EAAE,CAAC,CAAA;IACjB,CAAC;IAED,MAAM;QACL,OAAO;;;;KAIJ,CAAA;IACJ,CAAC;CACD"}
