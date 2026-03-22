@@ -11,6 +11,10 @@ node_modules
 dist
 dist-ssr
 *.local
+.mocha-dist/
+node_modules/
+dist/
+coverage/
 
 # Editor directories and files
 .vscode/*

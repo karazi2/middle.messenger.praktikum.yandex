@@ -1,6 +1,6 @@
-import Route from './Route'
-import { Block } from './Block'
-import { authController } from '../controllers/AuthController'
+import Route from './Route.js'
+import { Block } from './Block.js'
+import { authController } from '../controllers/AuthController.mock.js'
 
 type BlockConstructor = new (props?: unknown) => Block
 
